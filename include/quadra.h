@@ -1,7 +1,6 @@
 #ifndef QUADRA_H
 #define QUADRA_H
 
-// Tipo opaco: esconde a implementacao interna e evita desconto na nota
 typedef struct quadra_s* Quadra;
 
 // @brief Cria e aloca dinamicamente uma nova quadra.

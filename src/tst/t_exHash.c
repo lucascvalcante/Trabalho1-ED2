@@ -1,5 +1,5 @@
-#include "unity.h"
-#include "exHash.h"
+#include "../unity.h"
+#include "../exHash.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>

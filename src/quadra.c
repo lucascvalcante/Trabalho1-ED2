@@ -90,3 +90,7 @@ void free_quadra(Quadra q) {
         free(q);
     }
 }
+
+size_t get_tamanho_quadra() {
+    return sizeof(struct quadra_s);
+}

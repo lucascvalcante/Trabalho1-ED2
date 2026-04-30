@@ -1,6 +1,8 @@
 #ifndef QUADRA_H
 #define QUADRA_H
 
+#include <stddef.h>
+
 typedef struct quadra_s* Quadra;
 
 // @brief Cria e aloca dinamicamente uma nova quadra.
@@ -64,5 +66,8 @@ void get_quadra_ancora(Quadra q, double* ancora_x, double* ancora_y);
 // @brief Libera a memoria alocada para a quadra.
 // @param q Ponteiro para a quadra
 void free_quadra(Quadra q);
+
+// Retorna o tamanho em bytes da estrutura da Quadra
+size_t get_tamanho_quadra();
 
 #endif

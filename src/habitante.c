@@ -46,10 +46,19 @@ void set_habitante_endereco(Habitante h, const char* cep, char face, double nume
 
     h->sem_teto = false;
     
-    if (cep) strncpy(h->cep, cep, sizeof(h->cep) - 1);
+    if (cep) {
+        strncpy(h->cep, cep, sizeof(h->cep) - 1);
+        h->cep[sizeof(h->cep) - 1] = '\0';
+    }
     h->face = face;
     h->numero = numero;
-    if (complemento) strncpy(h->complemento, complemento, sizeof(h->complemento) - 1);
+    
+    if (complemento) {
+        strncpy(h->complemento, complemento, sizeof(h->complemento) - 1);
+        h->complemento[sizeof(h->complemento) - 1] = '\0';
+    } else {
+        h->complemento[0] = '\0';
+    }
 }
 
 void set_habitante_sem_teto(Habitante h) {
@@ -59,6 +68,40 @@ void set_habitante_sem_teto(Habitante h) {
         h->face = '\0';
         h->numero = 0.0;
         h->complemento[0] = '\0';
+    }
+}
+
+void set_habitante_cpf(Habitante h, const char* cpf) {
+    if (h != NULL && cpf != NULL) {
+        strncpy(h->cpf, cpf, sizeof(h->cpf) - 1);
+        h->cpf[sizeof(h->cpf) - 1] = '\0'; 
+    }
+}
+
+void set_habitante_nome(Habitante h, const char* nome) {
+    if (h != NULL && nome != NULL) {
+        strncpy(h->nome, nome, sizeof(h->nome) - 1);
+        h->nome[sizeof(h->nome) - 1] = '\0';
+    }
+}
+
+void set_habitante_sobrenome(Habitante h, const char* sobrenome) {
+    if (h != NULL && sobrenome != NULL) {
+        strncpy(h->sobrenome, sobrenome, sizeof(h->sobrenome) - 1);
+        h->sobrenome[sizeof(h->sobrenome) - 1] = '\0';
+    }
+}
+
+void set_habitante_sexo(Habitante h, char sexo) {
+    if (h != NULL) {
+        h->sexo = sexo;
+    }
+}
+
+void set_habitante_nascimento(Habitante h, const char* nascimento) {
+    if (h != NULL && nascimento != NULL) {
+        strncpy(h->nascimento, nascimento, sizeof(h->nascimento) - 1);
+        h->nascimento[sizeof(h->nascimento) - 1] = '\0';
     }
 }
 

@@ -102,4 +102,35 @@ const char* get_habitante_complemento(Habitante h);
 /// @param h Ponteiro para o habitante a ser impresso
 void print_habitante_info(FILE* txt, Habitante h);
 
+
+/// @brief Define um novo cpf para o habitante
+/// @param h Ponteiro para o habitante
+/// @param cpf Ponteiro para o novo cpf
+void set_habitante_cpf(Habitante h, const char* cpf);
+
+
+/// @brief Define um novo nome para o habitante
+/// @param h Ponteiro para o habitante
+/// @param nome Ponteiro para o novo nome
+void set_habitante_nome(Habitante h, const char* nome);
+
+
+/// @brief Define um novo sobrenome para o habitante
+/// @param h Ponteiro para o habitante
+/// @param sobrenome Ponteiro para o novo sobrenome
+void set_habitante_sobrenome(Habitante h, const char* sobrenome);
+
+
+/// @brief Define um novo sexo para o habitante
+/// @param h Ponteiro para o habitante
+/// @param char caractere definindo o novo sexo
+void set_habitante_sexo(Habitante h, char sexo);
+
+
+/// @brief Define um novo nascimento para o habitante
+/// @param h Ponteiro para o habitante
+/// @param nascimento Ponteiro para o novo nascimento
+void set_habitante_nascimento(Habitante h, const char* nascimento);
+
+
 #endif

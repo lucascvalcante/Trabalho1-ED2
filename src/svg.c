@@ -69,5 +69,5 @@ void escreve_retangulo_svg(const char* chave, void* registro, void* arquivo) {
             get_quadra_x(q), get_quadra_y(q), get_quadra_w(q), get_quadra_h(q), 
             get_quadra_cfill(q), get_quadra_cstrk(q), get_quadra_sw(q));
         
-    svg_texto(f_svg, x + (w / 2.0), y + (h / 2.0), chave, "white", "middle");
+    svg_texto(f_svg, x + (w / 2.0), y + (h / 2.0), chave, "black", "middle");
 }

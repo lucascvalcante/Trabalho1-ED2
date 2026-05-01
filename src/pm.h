@@ -4,7 +4,7 @@
 #include "exHash.h"
 
 /* Responsável por interpretar os arquivos de texto de entrada e executar
- * os comandos correspondentes no banco de dados.*/
+ os comandos correspondentes no banco de dados.*/
 
 /// @brief Abre o arquivo .pm, lê os comandos linha por linha e popula o Hash.
 /// @param caminho_arquivo Caminho para o arquivo .pm 

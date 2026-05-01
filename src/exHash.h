@@ -65,4 +65,20 @@ void dump_exHash(exHash hash, const char* arquivo_saida_hfd);
 /// @param hash Ponteiro para a estrutura do hashing
 void close_exHash(exHash hash);
 
+
+/// @brief Atualiza o dado de uma chave ja existente no Hash
+/// @param h Ponteiro para o Hash Extensivel
+/// @param chave String da chave a ser atualizada
+/// @param novo_dado Ponteiro para o novo dado que vai sobrescrever o antigo
+/// @return true se atualizado com sucesso, false se a chave nao for encontrada
+bool update_exHash(exHash h, const char* chave, void* novo_dado);
+
+
+/// @brief Percorre todos os registros validos do Hash executando uma funcao para cada um
+/// @param h Ponteiro para o Hash Extensivel
+/// @param func Funcao de callback que sera chamada para cada registro (recebe chave, dado e um ponteiro extra)
+/// @param extra Ponteiro generico para passar variaveis auxiliares (como contadores para o censo)
+void foreach_exHash(exHash h, void (*func)(const char* chave, void* dado, void* extra), void* extra);
+
+
 #endif

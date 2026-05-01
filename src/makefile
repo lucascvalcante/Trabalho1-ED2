@@ -10,8 +10,8 @@ TEST_SRCS = $(wildcard tst/t_*.c)
 TEST_BINS = $(patsubst tst/t_%.c, t_%, $(TEST_SRCS))
 
 ted: $(OBJ_MODULES) main.o
-	# $(CC) $(CFLAGS) main.o $(OBJ_MODULES) -o ted $(LIBS)
-	@echo "Executável 'ted' seria gerado aqui (aguardando main.c)"
+	$(CC) $(CFLAGS) main.o $(OBJ_MODULES) -o ted $(LIBS)
+	@echo "Executável 'ted' gerado com sucesso!"
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

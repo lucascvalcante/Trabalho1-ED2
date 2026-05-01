@@ -10,19 +10,23 @@
 // --- Funções auxiliares estáticas: --- //
 
 static void calcula_coords_endereco(Quadra q, char face, int num, double* x, double* y) {
-    if (face == 'N') {
+    if (face == 'S') {
         *x = get_quadra_x(q) + num;
         *y = get_quadra_y(q);
-    } else if (face == 'S') {
+    } 
+    else if (face == 'N') {
         *x = get_quadra_x(q) + num;
         *y = get_quadra_y(q) + get_quadra_h(q);
-    } else if (face == 'L') {
-        *x = get_quadra_x(q) + get_quadra_w(q);
-        *y = get_quadra_y(q) + num;
-    } else if (face == 'O') {
+    } 
+    else if (face == 'L') {
         *x = get_quadra_x(q);
         *y = get_quadra_y(q) + num;
-    } else {
+    } 
+    else if (face == 'O') {
+        *x = get_quadra_x(q) + get_quadra_w(q);
+        *y = get_quadra_y(q) + num;
+    } 
+    else {
         *x = get_quadra_x(q);
         *y = get_quadra_y(q);
     }
@@ -124,8 +128,9 @@ static void cmd_nasc(FILE* txt, exHash h_hab, const char* cpf, const char* nome,
         fprintf(txt, "Habitante cadastrado com sucesso.\n");
     } else {
         fprintf(txt, "Erro: CPF ja existente.\n");
-        free_habitante(h); 
     }
+    
+    free_habitante(h); 
     fprintf(txt, "\n");
 }
 
@@ -243,13 +248,17 @@ static void cmd_pq(FILE* txt, FILE* svg, exHash h_hab, exHash h_quadras, const c
     
     char buf[16];
     
-    sprintf(buf, "%d", aux.total);
+sprintf(buf, "%d", aux.total);
     svg_texto(svg, qx + (qw/2.0), qy + (qh/2.0), buf, "black", "middle");
 
-    sprintf(buf, "%d", aux.c_n); svg_texto(svg, qx + (qw/2.0), qy - 2, buf, "blue", "middle");
-    sprintf(buf, "%d", aux.c_s); svg_texto(svg, qx + (qw/2.0), qy + qh + 10, buf, "blue", "middle");
-    sprintf(buf, "%d", aux.c_l); svg_texto(svg, qx + qw + 5, qy + (qh/2.0), buf, "blue", "start");
-    sprintf(buf, "%d", aux.c_o); svg_texto(svg, qx - 5, qy + (qh/2.0), buf, "blue", "end");
+    sprintf(buf, "%d", aux.c_s); 
+    svg_texto(svg, qx + (qw/2.0), qy - 5, buf, "blue", "middle");
+    sprintf(buf, "%d", aux.c_n); 
+    svg_texto(svg, qx + (qw/2.0), qy + qh + 15, buf, "blue", "middle");
+    sprintf(buf, "%d", aux.c_l); 
+    svg_texto(svg, qx - 10, qy + (qh/2.0), buf, "blue", "end");
+    sprintf(buf, "%d", aux.c_o); 
+    svg_texto(svg, qx + qw + 10, qy + (qh/2.0), buf, "blue", "start");
 
     fprintf(txt, "Total na quadra: %d (N:%d S:%d L:%d O:%d)\n\n", aux.total, aux.c_n, aux.c_s, aux.c_l, aux.c_o);
 

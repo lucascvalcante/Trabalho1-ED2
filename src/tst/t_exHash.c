@@ -8,6 +8,12 @@ typedef struct {
     int valor;
 } Dado;
 
+// Callback auxiliar para o teste do foreach
+static void callback_teste_conta(const char* chave, void* dado, void* extra) {
+    int* contador = (int*)extra;
+    (*contador)++;
+}
+
 exHash hash = NULL; 
 
 void setUp(void) {
@@ -89,6 +95,38 @@ void test_LoadHash(void) {
     free(busca);
 }
 
+void test_UpdateElement(void) {
+    Dado d1 = {100};
+    insert_exHash(hash, "CEP10", &d1);
+
+    Dado d_novo = {500};
+    TEST_ASSERT_TRUE(update_exHash(hash, "CEP10", &d_novo));
+
+    Dado* busca = (Dado*) search_exHash(hash, "CEP10");
+    TEST_ASSERT_NOT_NULL(busca);
+    TEST_ASSERT_EQUAL_INT(500, busca->valor);
+    free(busca);
+
+    Dado d_fake = {999};
+    TEST_ASSERT_FALSE(update_exHash(hash, "NAO_EXISTE", &d_fake));
+}
+
+void test_ForeachElement(void) {
+    Dado d1 = {10};
+    insert_exHash(hash, "C1", &d1);
+    insert_exHash(hash, "C2", &d1);
+    insert_exHash(hash, "C3", &d1);
+
+    int contador = 0;
+    foreach_exHash(hash, callback_teste_conta, &contador);    
+    TEST_ASSERT_EQUAL_INT(3, contador);
+    remove_exHash(hash, "C2");
+    
+    contador = 0; 
+    foreach_exHash(hash, callback_teste_conta, &contador);    
+    TEST_ASSERT_EQUAL_INT(2, contador);
+}
+
 int main(void) {
     UNITY_BEGIN();
     
@@ -98,7 +136,9 @@ int main(void) {
     RUN_TEST(test_SearchExistingElements);
     RUN_TEST(test_SearchUnexistingElements);
     RUN_TEST(test_RemoveExistingElement);
-    RUN_TEST(test_LoadHash); 
+    RUN_TEST(test_LoadHash);     
+    RUN_TEST(test_UpdateElement);
+    RUN_TEST(test_ForeachElement);
     
     return UNITY_END();
 }

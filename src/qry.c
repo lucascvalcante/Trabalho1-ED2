@@ -129,7 +129,7 @@ static void cmd_nasc(FILE* txt, exHash h_hab, const char* cpf, const char* nome,
     } else {
         fprintf(txt, "Erro: CPF ja existente.\n");
     }
-    
+
     free_habitante(h); 
     fprintf(txt, "\n");
 }
@@ -138,7 +138,7 @@ static void cmd_rip(FILE* txt, FILE* svg, exHash h_hab, exHash h_quadras, const 
     fprintf(txt, "rip %s\n", cpf);
     Habitante h = (Habitante) search_exHash(h_hab, cpf);
     if (h) {
-        fprintf(txt, "Falecimento: %s %s\n", get_habitante_nome(h), get_habitante_sobrenome(h));
+        fprintf(txt, "Falecimento: %s %s | Sexo: %c | Nasc: %s\n", get_habitante_nome(h), get_habitante_sobrenome(h), get_habitante_sexo(h), get_habitante_nascimento(h));
         
         if (!is_sem_teto(h)) {
             const char* cep = get_habitante_cep(h);

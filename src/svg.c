@@ -4,7 +4,7 @@
 FILE* abre_svg(const char* caminho) {
     FILE* f = fopen(caminho, "w");
     if (f) {
-        fprintf(f, "<svg width=\"10000\" height=\"10000\" xmlns=\"http://www.w3.org/2000/svg\">\n");
+        fprintf(f, "<svg width=\"15000\" height=\"10000\" xmlns=\"http://www.w3.org/2000/svg\">\n");
     }
     return f;
 }
@@ -49,7 +49,7 @@ void gerar_svg_geo(const char* caminho_svg, exHash hash_quadras) {
         return;
     }
     
-    fprintf(f_svg, "<svg width=\"10000\" height=\"10000\" xmlns=\"http://www.w3.org/2000/svg\">\n");
+    fprintf(f_svg, "<svg width=\"15000\" height=\"10000\" xmlns=\"http://www.w3.org/2000/svg\">\n");
     foreach_exHash(hash_quadras, escreve_retangulo_svg, f_svg);
     fprintf(f_svg, "</svg>\n");
     fclose(f_svg);

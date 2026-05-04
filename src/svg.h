@@ -5,6 +5,18 @@
 #include "exHash.h"
 #include "quadra.h"
 
+/**
+ * @file svg.h
+ * @brief Módulo de Geração e Manipulação de Imagens Vetoriais (SVG).
+ *
+ * Este módulo é responsável pela criação e escrita de arquivos gráficos no 
+ * formato SVG. Ele fornece funções para desenhar formas geométricas (retângulos, 
+ * círculos, cruzes) e textos, permitindo a visualização espacial da cidade 
+ * (renderização das quadras) e a marcação visual dos resultados das consultas 
+ * realizadas no sistema.
+ */
+
+ 
 /// @brief Inicia o arquivo SVG escrevendo o cabecalho padrao
 /// @param caminho Caminho para o arquivo .svg a ser criado
 /// @return Ponteiro para o arquivo 

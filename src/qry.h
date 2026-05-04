@@ -3,6 +3,18 @@
 
 #include "exHash.h"
 
+/**
+ * @file qry.h
+ * @brief Módulo de Processamento de Consultas e Relatórios (.qry).
+ *
+ * Este módulo é responsável por ler, interpretar e executar os comandos 
+ * definidos em arquivos de consulta. Ele interage simultaneamente com as 
+ * tabelas hash de habitantes e quadras para realizar buscas, atualizações 
+ * espaciais e cálculos, gerando como resultado um relatório detalhado em 
+ * formato de texto (.txt) e a representação visual correspondente (.svg).
+ */
+ 
+
 /// @brief Lê um arquivo .qry, executa as ações e gera arquivos txt e svg de saída
 /// @param caminho_qry Arquivo de entrada .qry
 /// @param caminho_txt Arquivo de saída .txt

@@ -1,3 +1,11 @@
+#ifndef EXHASH_H
+#define EXHASH_H
+
+#include <stdint.h>
+#include <stdbool.h>
+#include <stddef.h>
+
+
 /**
  * @file exHash.h
  * @brief Módulo de Hashing Dinâmico (Extensível) em Disco.
@@ -8,12 +16,6 @@
  * buckets quando a capacidade máxima é atingida e gera relatórios estruturais (.hfd).
  */
 
-#ifndef EXHASH_H
-#define EXHASH_H
-
-#include <stdint.h>
-#include <stdbool.h>
-#include <stddef.h>
 
 // Tipo opaco usando forward declaration. 
 // Garante o encapsulamento e segurança de tipo.

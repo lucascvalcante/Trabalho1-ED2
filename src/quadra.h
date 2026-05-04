@@ -3,6 +3,18 @@
 
 #include <stddef.h>
 
+
+/**
+ * @file quadra.h
+ * @brief Definição e Manipulação do TAD Quadra.
+ *
+ * Este módulo define o Tipo Abstrato de Dados (TAD) para representar uma 
+ * quadra urbana. Armazena o identificador único (CEP), coordenadas espaciais 
+ * (x, y) e dimensões (largura, altura). Fornece a interface necessária para 
+ * manipular os dados geográficos que serão serializados na tabela hash.
+ */
+
+ 
 typedef struct quadra_s* Quadra;
 
 // @brief Cria e aloca dinamicamente uma nova quadra.

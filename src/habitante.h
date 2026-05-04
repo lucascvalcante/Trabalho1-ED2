@@ -5,6 +5,18 @@
 #include <stddef.h>
 #include <stdio.h>
 
+
+/**
+ * @file habitante.h
+ * @brief Definição e Manipulação do TAD Habitante.
+ *
+ * Este módulo define o Tipo Abstrato de Dados (TAD) para representar um 
+ * habitante do sistema. Gerencia informações como CPF, nome, gênero e 
+ * data de nascimento, além de manter os dados de moradia (CEP, face, número). 
+ * Inclui funções de criação, destruição e acesso (getters/setters) aos atributos.
+ */
+
+ 
 typedef struct habitante_s* Habitante;
 
 /// @brief Obtém o tamanho exato da estrutura do habitante em memória

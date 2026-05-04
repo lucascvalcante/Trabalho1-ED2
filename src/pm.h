@@ -3,8 +3,16 @@
 
 #include "exHash.h"
 
-/* Responsável por interpretar os arquivos de texto de entrada e executar
- os comandos correspondentes no banco de dados.*/
+/**
+ * @file pm.h
+ * @brief Módulo de Processamento de Pessoas e Moradias (.pm).
+ *
+ * Este módulo gerencia a leitura de arquivos de dados populacionais. 
+ * É responsável por cadastrar novos habitantes e processar mudanças de 
+ * endereço, realizando a integração entre os moradores e as quadras 
+ * armazenadas no sistema, utilizando operações otimizadas de busca e 
+ * atualização em disco.
+ */
 
 /// @brief Abre o arquivo .pm, lê os comandos linha por linha e popula o Hash.
 /// @param caminho_arquivo Caminho para o arquivo .pm 

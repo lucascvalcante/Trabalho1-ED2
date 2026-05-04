@@ -105,31 +105,34 @@ void close_exHash(exHash h) {
 }
 
 void* search_exHash(exHash h, const char* chave) {
+    if (!h || !chave) return NULL;
+
     uint32_t hash = hash_string(chave);
     uint32_t indice_dir = get_bits(hash, h->profundidade_global);
     long offset_bucket = h->diretorio[indice_dir];
+
     fseek(h->arquivo_dados, offset_bucket, SEEK_SET);
     
     CabecalhoBucket cabecalho;
-    fread(&cabecalho, sizeof(CabecalhoBucket), 1, h->arquivo_dados);
-
-    size_t tamanho_registro_completo = sizeof(Registro) + h->tamanho_dado;
-    void* buffer_registro = malloc(tamanho_registro_completo);
-
+    if (fread(&cabecalho, sizeof(CabecalhoBucket), 1, h->arquivo_dados) != 1) return NULL;
+    size_t tamanho_registro = sizeof(Registro) + h->tamanho_dado;
+    size_t tamanho_bucket_bytes = tamanho_registro * h->tamanho_bucket;
+    void* buffer_bucket = malloc(tamanho_bucket_bytes);    
+    fread(buffer_bucket, tamanho_registro, h->tamanho_bucket, h->arquivo_dados);
     for (uint32_t i = 0; i < h->tamanho_bucket; i++) {
-        fread(buffer_registro, tamanho_registro_completo, 1, h->arquivo_dados);
-        Registro* reg = (Registro*) buffer_registro;
-
+        Registro* reg = (Registro*) ((char*)buffer_bucket + (i * tamanho_registro));
+        
         if (reg->ocupado && strcmp(reg->chave, chave) == 0) {
-            void* dado_encontrado = malloc(h->tamanho_dado);
-            memcpy(dado_encontrado, (char*)buffer_registro + sizeof(Registro), h->tamanho_dado);
-            free(buffer_registro);
-            return dado_encontrado;
+            void* retorno = malloc(h->tamanho_dado);
+            memcpy(retorno, (char*)reg + sizeof(Registro), h->tamanho_dado);
+            
+            free(buffer_bucket);
+            return retorno; 
         }
     }
 
-    free(buffer_registro);
-    return NULL;
+    free(buffer_bucket);
+    return NULL; 
 }
 
 bool remove_exHash(exHash h, const char* chave) {
@@ -146,15 +149,16 @@ bool remove_exHash(exHash h, const char* chave) {
     void* buffer_registro = malloc(tamanho_registro_completo);
 
     for (uint32_t i = 0; i < h->tamanho_bucket; i++) {
-        long pos_registro = ftell(h->arquivo_dados);
+        long pos_registro = offset_bucket + sizeof(CabecalhoBucket) + (i * tamanho_registro_completo);
+        
         fread(buffer_registro, tamanho_registro_completo, 1, h->arquivo_dados);
         Registro* reg = (Registro*) buffer_registro;
 
         if (reg->ocupado && strcmp(reg->chave, chave) == 0) {
-
             reg->ocupado = false;
             fseek(h->arquivo_dados, pos_registro, SEEK_SET);
             fwrite(buffer_registro, tamanho_registro_completo, 1, h->arquivo_dados);
+            
             cabecalho.qtd_registros--;
             fseek(h->arquivo_dados, offset_bucket, SEEK_SET);
             fwrite(&cabecalho, sizeof(CabecalhoBucket), 1, h->arquivo_dados);
@@ -264,6 +268,7 @@ bool insert_exHash(exHash h, const char* chave, void* dado) {
 }
 
 
+
 void dump_exHash(exHash h, const char* arquivo_saida_hfd) {
     if (!h || !arquivo_saida_hfd) return;
     FILE* saida = fopen(arquivo_saida_hfd, "w");
@@ -368,10 +373,9 @@ bool update_exHash(exHash h, const char* chave, void* novo_dado) {
     void* buffer_registro = malloc(tamanho_registro_completo);
 
     for (uint32_t i = 0; i < h->tamanho_bucket; i++) {
-        long pos_registro = ftell(h->arquivo_dados);
+        long pos_registro = offset_bucket + sizeof(CabecalhoBucket) + (i * tamanho_registro_completo);        
         fread(buffer_registro, tamanho_registro_completo, 1, h->arquivo_dados);
         Registro* reg = (Registro*) buffer_registro;
-
         if (reg->ocupado && strcmp(reg->chave, chave) == 0) {
             fseek(h->arquivo_dados, pos_registro + sizeof(Registro), SEEK_SET);
             fwrite(novo_dado, h->tamanho_dado, 1, h->arquivo_dados);
@@ -389,26 +393,26 @@ void foreach_exHash(exHash h, void (*func)(const char* chave, void* dado, void* 
     if (!h || !func) return;
 
     long pos_atual = ftell(h->arquivo_dados);
-
     fseek(h->arquivo_dados, 0, SEEK_SET);
     
     CabecalhoBucket cabecalho;
-    size_t tamanho_registro_completo = sizeof(Registro) + h->tamanho_dado;
-    void* buffer_registro = malloc(tamanho_registro_completo);
+    size_t tamanho_registro = sizeof(Registro) + h->tamanho_dado;    
+    size_t tamanho_bucket_bytes = tamanho_registro * h->tamanho_bucket;    
+    void* buffer_bucket = malloc(tamanho_bucket_bytes);
 
     while (fread(&cabecalho, sizeof(CabecalhoBucket), 1, h->arquivo_dados) == 1) {
+        
+        fread(buffer_bucket, tamanho_registro, h->tamanho_bucket, h->arquivo_dados);        
         for (uint32_t i = 0; i < h->tamanho_bucket; i++) {
-            fread(buffer_registro, tamanho_registro_completo, 1, h->arquivo_dados);
-            Registro* reg = (Registro*) buffer_registro;
+            Registro* reg = (Registro*) ((char*)buffer_bucket + (i * tamanho_registro));
             
             if (reg->ocupado) {
-                void* dado = (char*)buffer_registro + sizeof(Registro);
+                void* dado = (char*)reg + sizeof(Registro);
                 func(reg->chave, dado, extra);
             }
         }
     }
 
-    free(buffer_registro);
+    free(buffer_bucket);
     fseek(h->arquivo_dados, pos_atual, SEEK_SET);
 }
-

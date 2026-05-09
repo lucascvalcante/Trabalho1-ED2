@@ -305,17 +305,17 @@ static void cmd_censo(FILE* txt, exHash h_hab) {
 void processa_arquivo_qry(const char* caminho_qry, const char* caminho_txt, const char* caminho_svg, exHash h_hab, exHash h_quadras) {
     FILE* f_qry = fopen(caminho_qry, "r");
     FILE* f_txt = fopen(caminho_txt, "w");
-    FILE* f_svg = abre_svg(caminho_svg);
+    FILE* f_svg = abre_svg(caminho_svg);    
+    FILE* f_temp_marcacoes = fopen("rascunho_svg.txt", "w+");
 
-    if (!f_qry || !f_txt || !f_svg) {
+    if (!f_qry || !f_txt || !f_svg || !f_temp_marcacoes) {
         printf("Erro ao abrir arquivos do QRY.\n");
         if (f_qry) fclose(f_qry);
         if (f_txt) fclose(f_txt);
         if (f_svg) fecha_svg(f_svg);
+        if (f_temp_marcacoes) fclose(f_temp_marcacoes);
         return;
     }
-
-    foreach_exHash(h_quadras, escreve_retangulo_svg, f_svg);
 
     char linha[256];
     while (fgets(linha, sizeof(linha), f_qry)) {
@@ -335,33 +335,43 @@ void processa_arquivo_qry(const char* caminho_qry, const char* caminho_txt, cons
         else if (strcmp(comando, "rip") == 0) {
             char cpf[32];
             sscanf(linha, "%*s %31s", cpf);
-            cmd_rip(f_txt, f_svg, h_hab, h_quadras, cpf);
+            cmd_rip(f_txt, f_temp_marcacoes, h_hab, h_quadras, cpf);
         }
         else if (strcmp(comando, "mud") == 0) {
             char cpf[32], cep[32], face, cmpl[64] = "";
             int num;
             sscanf(linha, "%*s %31s %31s %c %d %63[^\n]", cpf, cep, &face, &num, cmpl);
-            cmd_mud(f_txt, f_svg, h_hab, h_quadras, cpf, cep, face, num, cmpl);
+            cmd_mud(f_txt, f_temp_marcacoes, h_hab, h_quadras, cpf, cep, face, num, cmpl);
         }
         else if (strcmp(comando, "dspj") == 0) {
             char cpf[32];
             sscanf(linha, "%*s %31s", cpf);
-            cmd_dspj(f_txt, f_svg, h_hab, h_quadras, cpf);
+            cmd_dspj(f_txt, f_temp_marcacoes, h_hab, h_quadras, cpf);
         }
         else if (strcmp(comando, "rq") == 0) {
             char cep[32];
             sscanf(linha, "%*s %31s", cep);
-            cmd_rq(f_txt, f_svg, h_hab, h_quadras, cep);
+            cmd_rq(f_txt, f_temp_marcacoes, h_hab, h_quadras, cep);
         }
         else if (strcmp(comando, "pq") == 0) {
             char cep[32];
             sscanf(linha, "%*s %31s", cep);
-            cmd_pq(f_txt, f_svg, h_hab, h_quadras, cep);
+            cmd_pq(f_txt, f_temp_marcacoes, h_hab, h_quadras, cep);
         }
         else if (strcmp(comando, "censo") == 0) {
             cmd_censo(f_txt, h_hab);
         }
     }
+    
+    foreach_exHash(h_quadras, escreve_retangulo_svg, f_svg);
+    rewind(f_temp_marcacoes);     
+    char c;
+    while ((c = fgetc(f_temp_marcacoes)) != EOF) {
+        fputc(c, f_svg);
+    }
+
+    fclose(f_temp_marcacoes);
+    remove("rascunho_svg.txt"); 
 
     fclose(f_qry);
     fclose(f_txt);

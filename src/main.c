@@ -62,8 +62,8 @@ int main(int argc, char *argv[]) {
     monta_caminho(path_hash_quad, dir_out, "quadras.hf");
     monta_caminho(path_hash_hab, dir_out, "habitantes.hf");
 
-    exHash h_quad = init_exHash(path_hash_quad, 4, get_tamanho_quadra()); 
-    exHash h_hab = init_exHash(path_hash_hab, 4, get_habitante_size());
+    exHash h_quad = init_exHash(path_hash_quad, 32, get_tamanho_quadra()); 
+    exHash h_hab = init_exHash(path_hash_hab, 32, get_habitante_size());
 
     printf("[*] Processando GEO: %s\n", path_geo_completo);
     processa_arquivo_geo(path_geo_completo, h_quad); 
